@@ -5,22 +5,45 @@
 </head>
 <body>
 
-    <h2>all Transport - Billing Dashboard</h2>
+    <h2>Jijaji Transport - Billing Dashboard</h2>
     
     <form>
         <label>Driver Ka Naam:</label><br>
-        <input type="text" placeholder="Naam likhein"><br><br>
+        <input type="text" id="driverName" placeholder="Naam likhein"><br><br>
 
         <label>Gaadi Number:</label><br>
-        <input type="text" placeholder="Jaise: HR 26 XX 0000"><br><br>
+        <input type="text" id="gaadiNumber" placeholder="Jaise: HR 26 XX 0000"><br><br>
 
         <label>Total Kilometers:</label><br>
-        <input type="number" placeholder="Kitne KM chale?"><br><br>
+        <input type="number" id="kms" placeholder="Kitne KM chale?"><br><br>
 
         <label>Toll Tax / Extra Kharch (₹):</label><br>
-        <input type="number" placeholder="Agar koi kharch ho"><br><br>
+        <input type="number" id="toll" placeholder="Agar koi kharch ho" value="0"><br><br>
 
-        <button type="button">Bill Generate Karein</button>
+        <button type="button" onclick="calculateBill()">Bill Generate Karein</button>
     </form>
 
+    <br>
+    <h3 id="finalResult" style="color: blue;"></h3>
+
+    <script>
+        function calculateBill() {
+            // 1. Form se boxes ka data uthana
+            let km = document.getElementById("kms").value;
+            let toll = document.getElementById("toll").value;
+            let name = document.getElementById("driverName").value;
+
+            // 2. Calculation karna (Maan lo rate ₹50 per kilometer hai)
+            let ratePerKm = 50;
+            
+            // Final bill = (Kilometer x Rate) + Toll tax
+            let totalBill = (km * ratePerKm) + Number(toll);
+
+            // 3. Result ko screen par print karna
+            document.getElementById("finalResult").innerHTML = 
+                name + " bhai ka total bill hua: ₹" + totalBill;
+        }
+    </script>
+
 </body>
+</html>
