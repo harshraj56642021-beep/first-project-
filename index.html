@@ -30,6 +30,7 @@
             font-size: 15px;
         }
 
+        /* Normal Button */
         button {
             background-color: #28a745; 
             color: white;
@@ -44,6 +45,19 @@
 
         button:hover {
             background-color: #218838;
+        }
+
+        /* Admin Button ka alag design */
+        .admin-btn {
+            background-color: #343a40;
+            margin-top: 20px;
+            width: auto;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .admin-btn:hover {
+            background-color: #23272b;
         }
 
         #status {
@@ -81,6 +95,8 @@
     <br>
     <h3 id="finalResult" style="color: blue;"></h3>
     <p id="status"></p>
+
+    <button class="admin-btn" onclick="adminLogin()">🔒 Admin Login</button>
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxYN4iqZhTY6CBiBIC735xJwXQFTzKk-TZvPPLs4cHJ7q-uYnIzLM7hzMtIl8dEoco/exec';
@@ -130,7 +146,6 @@
                 document.getElementById("status").style.color = "green";
                 document.getElementById("status").innerHTML = "✅ Data successfully save ho gaya!";
                 
-                // Form ko auto-reset (clear) karna nayi entry ke liye
                 document.getElementById("billingForm").reset();
             })
             .catch(error => {
@@ -138,6 +153,20 @@
                 document.getElementById("status").innerHTML = "❌ Error! Data save nahi ho paya.";
                 console.error('Error!', error.message);
             });
+        }
+
+        // --- NAYA ADMIN LOGIN FUNCTION ---
+        function adminLogin() {
+            let pass = prompt("Kripya Admin Password daalein:");
+            
+            // Yahan 'Admin@123' password set kiya hai (Tum ise badal sakte ho)
+            if (pass === "Admin@123") {
+                alert("Login Successful! Google Sheet khul rahi hai...");
+                // Yahan apni Google Sheet ka asli link daalna hoga taaki wo khul jaye
+                window.open("https://docs.google.com/spreadsheets/d/1Xd8s-4d9U8IyFZVP2-GQBXQ1qZ1hWd-LmkOuKKWK3gw/edit?gid=0#gid=0", "_blank"); 
+            } else if (pass !== null) {
+                alert("❌ Galat Password! Access Denied.");
+            }
         }
     </script>
 
