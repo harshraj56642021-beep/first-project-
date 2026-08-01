@@ -49,7 +49,7 @@
 </head>
 <body>
 
-    <h2> Transport - Billing Dashboard</h2>
+    <h2>Jijaji Transport - Billing Dashboard</h2>
     
     <form>
         <label>Driver Ka Naam:</label><br>
@@ -61,8 +61,14 @@
         <label>Total Kilometers:</label><br>
         <input type="number" id="kms" placeholder="Kitne KM chale?"><br>
 
-        <label>Toll Tax / Extra Kharch (₹):</label><br>
-        <input type="number" id="toll" placeholder="Agar koi kharch ho" value="0"><br>
+        <label>Toll Tax Total (₹):</label><br>
+        <input type="number" id="toll" placeholder="Sabhi toll ka total" value="0"><br>
+
+        <label>Parking Charge (₹):</label><br>
+        <input type="number" id="parking" placeholder="Parking ka kharch" value="0"><br>
+
+        <label>Extra Kharcha (₹):</label><br>
+        <input type="number" id="extra" placeholder="Chai/Pani ya anya kharch" value="0"><br>
 
         <button type="button" onclick="calculateBill()">Bill Generate Karein</button>
     </form>
@@ -72,13 +78,23 @@
 
     <script>
         function calculateBill() {
+            // Saare boxes se value nikalna
             let km = document.getElementById("kms").value;
             let toll = document.getElementById("toll").value;
+            let parking = document.getElementById("parking").value;
+            let extra = document.getElementById("extra").value;
             let name = document.getElementById("driverName").value;
 
-            let ratePerKm = 50; // Rate 50 rupaye set kiya hai
-            let totalBill = (km * ratePerKm) + Number(toll);
+            // Rate set karna
+            let ratePerKm = 50; 
+            
+            // Saare extra kharcho ko ek sath jodna (Number format mein taaki text na ban jaye)
+            let totalExpenses = Number(toll) + Number(parking) + Number(extra);
+            
+            // Final calculation
+            let totalBill = (km * ratePerKm) + totalExpenses;
 
+            // Result print karna
             document.getElementById("finalResult").innerHTML = 
                 name + " bhai ka total bill hua: ₹" + totalBill;
         }
