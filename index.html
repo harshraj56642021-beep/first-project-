@@ -2,6 +2,50 @@
 <html>
 <head>
     <title>Transport Billing System</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f3;
+            text-align: center;
+            padding: 20px;
+        }
+
+        form {
+            background-color: white;
+            max-width: 350px;
+            margin: 0 auto; 
+            padding: 25px;
+            border-radius: 12px; 
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.1); 
+            text-align: left;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        button {
+            background-color: #28a745; 
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer; 
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
 
@@ -9,16 +53,16 @@
     
     <form>
         <label>Driver Ka Naam:</label><br>
-        <input type="text" id="driverName" placeholder="Naam likhein"><br><br>
+        <input type="text" id="driverName" placeholder="Naam likhein"><br>
 
         <label>Gaadi Number:</label><br>
-        <input type="text" id="gaadiNumber" placeholder="Jaise: HR 26 XX 0000"><br><br>
+        <input type="text" id="gaadiNumber" placeholder="Jaise: HR 26 XX 0000"><br>
 
         <label>Total Kilometers:</label><br>
-        <input type="number" id="kms" placeholder="Kitne KM chale?"><br><br>
+        <input type="number" id="kms" placeholder="Kitne KM chale?"><br>
 
         <label>Toll Tax / Extra Kharch (₹):</label><br>
-        <input type="number" id="toll" placeholder="Agar koi kharch ho" value="0"><br><br>
+        <input type="number" id="toll" placeholder="Agar koi kharch ho" value="0"><br>
 
         <button type="button" onclick="calculateBill()">Bill Generate Karein</button>
     </form>
@@ -28,18 +72,13 @@
 
     <script>
         function calculateBill() {
-            // 1. Form se boxes ka data uthana
             let km = document.getElementById("kms").value;
             let toll = document.getElementById("toll").value;
             let name = document.getElementById("driverName").value;
 
-            // 2. Calculation karna (Maan lo rate ₹50 per kilometer hai)
-            let ratePerKm = 50;
-            
-            // Final bill = (Kilometer x Rate) + Toll tax
+            let ratePerKm = 50; // Rate 50 rupaye set kiya hai
             let totalBill = (km * ratePerKm) + Number(toll);
 
-            // 3. Result ko screen par print karna
             document.getElementById("finalResult").innerHTML = 
                 name + " bhai ka total bill hua: ₹" + totalBill;
         }
