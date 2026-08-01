@@ -54,7 +54,7 @@
 </head>
 <body>
 
-    <h2> Transport - Billing Dashboard</h2>
+    <h2>Transport Billing Dashboard</h2>
     
     <form id="billingForm">
         <label>Driver Ka Naam:</label><br>
@@ -83,7 +83,6 @@
     <p id="status"></p>
 
     <script>
-        // Google Apps Script Web App Link
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxYN4iqZhTY6CBiBIC735xJwXQFTzKk-TZvPPLs4cHJ7q-uYnIzLM7hzMtIl8dEoco/exec';
 
         function calculateAndSubmitBill() {
@@ -99,19 +98,16 @@
                 return;
             }
 
-            // Calculation
             let ratePerKm = 50; 
             let totalExpenses = Number(toll) + Number(parking) + Number(extra);
             let totalBill = (Number(km) * ratePerKm) + totalExpenses;
 
-            // Result Screen par dikhana
             document.getElementById("finalResult").innerHTML = 
-                name + " bhai ka total bill hua: ₹" + totalBill;
+                "Total bill hua: ₹" + totalBill;
             
             document.getElementById("status").style.color = "orange";
             document.getElementById("status").innerHTML = "Data Google Sheet mein save ho raha hai...";
 
-            // Google Sheet ko data bhejna
             let formData = {
                 name: name,
                 gaadi: gaadi,
@@ -132,7 +128,10 @@
             })
             .then(response => {
                 document.getElementById("status").style.color = "green";
-                document.getElementById("status").innerHTML = "✅ Data Google Sheet mein successfully save ho gaya!";
+                document.getElementById("status").innerHTML = "✅ Data successfully save ho gaya!";
+                
+                // Form ko auto-reset (clear) karna nayi entry ke liye
+                document.getElementById("billingForm").reset();
             })
             .catch(error => {
                 document.getElementById("status").style.color = "red";
