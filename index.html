@@ -45,21 +45,26 @@
         button:hover {
             background-color: #218838;
         }
+
+        #status {
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
     <h2>Jijaji Transport - Billing Dashboard</h2>
     
-    <form>
+    <form id="billingForm">
         <label>Driver Ka Naam:</label><br>
-        <input type="text" id="driverName" placeholder="Naam likhein"><br>
+        <input type="text" id="driverName" placeholder="Naam likhein" required><br>
 
         <label>Gaadi Number:</label><br>
-        <input type="text" id="gaadiNumber" placeholder="Jaise: HR 26 XX 0000"><br>
+        <input type="text" id="gaadiNumber" placeholder="Jaise: HR 26 XX 0000" required><br>
 
         <label>Total Kilometers:</label><br>
-        <input type="number" id="kms" placeholder="Kitne KM chale?"><br>
+        <input type="number" id="kms" placeholder="Kitne KM chale?" required><br>
 
         <label>Toll Tax Total (₹):</label><br>
         <input type="number" id="toll" placeholder="Sabhi toll ka total" value="0"><br>
@@ -70,33 +75,70 @@
         <label>Extra Kharcha (₹):</label><br>
         <input type="number" id="extra" placeholder="Chai/Pani ya anya kharch" value="0"><br>
 
-        <button type="button" onclick="calculateBill()">Bill Generate Karein</button>
+        <button type="button" onclick="calculateAndSubmitBill()">Bill Generate & Save Karein</button>
     </form>
 
     <br>
     <h3 id="finalResult" style="color: blue;"></h3>
+    <p id="status"></p>
 
     <script>
-        function calculateBill() {
-            // Saare boxes se value nikalna
-            let km = document.getElementById("kms").value;
-            let toll = document.getElementById("toll").value;
-            let parking = document.getElementById("parking").value;
-            let extra = document.getElementById("extra").value;
+        // Google Apps Script Web App Link
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxYN4iqZhTY6CBiBIC735xJwXQFTzKk-TZvPPLs4cHJ7q-uYnIzLM7hzMtIl8dEoco/exec';
+
+        function calculateAndSubmitBill() {
             let name = document.getElementById("driverName").value;
+            let gaadi = document.getElementById("gaadiNumber").value;
+            let km = document.getElementById("kms").value;
+            let toll = document.getElementById("toll").value || 0;
+            let parking = document.getElementById("parking").value || 0;
+            let extra = document.getElementById("extra").value || 0;
 
-            // Rate set karna
+            if(!name || !gaadi || !km) {
+                alert("Kripya Naam, Gaadi Number aur Kilometers zaroor bharein!");
+                return;
+            }
+
+            // Calculation
             let ratePerKm = 50; 
-            
-            // Saare extra kharcho ko ek sath jodna (Number format mein taaki text na ban jaye)
             let totalExpenses = Number(toll) + Number(parking) + Number(extra);
-            
-            // Final calculation
-            let totalBill = (km * ratePerKm) + totalExpenses;
+            let totalBill = (Number(km) * ratePerKm) + totalExpenses;
 
-            // Result print karna
+            // Result Screen par dikhana
             document.getElementById("finalResult").innerHTML = 
                 name + " bhai ka total bill hua: ₹" + totalBill;
+            
+            document.getElementById("status").style.color = "orange";
+            document.getElementById("status").innerHTML = "Data Google Sheet mein save ho raha hai...";
+
+            // Google Sheet ko data bhejna
+            let formData = {
+                name: name,
+                gaadi: gaadi,
+                km: km,
+                toll: toll,
+                parking: parking,
+                extra: extra,
+                totalBill: totalBill
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                document.getElementById("status").style.color = "green";
+                document.getElementById("status").innerHTML = "✅ Data Google Sheet mein successfully save ho gaya!";
+            })
+            .catch(error => {
+                document.getElementById("status").style.color = "red";
+                document.getElementById("status").innerHTML = "❌ Error! Data save nahi ho paya.";
+                console.error('Error!', error.message);
+            });
         }
     </script>
 
